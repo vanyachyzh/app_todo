@@ -1,8 +1,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { ErrorType } from '../../types/ErrorType';
-import { Error } from '../../types/Error';
+import { ErrorType, Error } from '../../types';
 
 type Props = {
   setError: (error: Error) => void,

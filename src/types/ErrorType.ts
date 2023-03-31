@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-shadow
 export enum ErrorType {
   EmptyTitle = 'Title can\'t be empty',
   Delete = 'Unable to delete a todo',

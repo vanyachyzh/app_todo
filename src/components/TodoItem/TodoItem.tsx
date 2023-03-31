@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Todo, Property, KeyType } from '../../types';
@@ -24,11 +25,6 @@ export const TodoItem: React.FC<Props> = ({
   let isEscape = false;
   const isChanged = placeHolder !== value;
 
-  // useEffect(() => {
-  //   // This will run every time the count state is updated
-  //   console.log('Count has been updated:', isEscape);
-  // }, [isEscape]);
-
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
@@ -37,7 +33,6 @@ export const TodoItem: React.FC<Props> = ({
     event: React.KeyboardEvent<HTMLInputElement>
     | React.FocusEvent<HTMLInputElement>,
   ) => {
-    // console.log('looseFocus')
     setIsReadOnly(true);
     setValue('');
     event.currentTarget.blur();
@@ -53,9 +48,8 @@ export const TodoItem: React.FC<Props> = ({
     event: React.FocusEvent<HTMLInputElement>
     | React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    // console.log('changeTitle')
-    updateTodo(id, { title: event.target.value });
-    setPlaceHolder(event.target.value);
+    updateTodo(id, { title: event.currentTarget.value });
+    setPlaceHolder(event.currentTarget.value);
     looseFocus(event);
   };
 
