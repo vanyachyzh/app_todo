@@ -4,9 +4,9 @@
 
 ## Features
 
-Create user account
+Create user account.
 
-Add, edit, and delete tasks
+Add, edit, and delete tasks.
 
 To add a task, simply type in the task in the input field and press the "Enter" key.
 
