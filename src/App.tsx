@@ -1,7 +1,8 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { Header } from './components/Header';
+import { AuthContext } from './components/Auth/AuthContext';
 import { TodoList } from './components/TodoList';
 import { Footer } from './components/Footer';
 import { TodoNotification } from './components/TodoNotification';
@@ -14,11 +15,10 @@ const initialError: Error = {
   type: ErrorType.None,
 };
 
-const USER_ID = 6657;
-const localTodos = JSON.parse(localStorage.getItem('todos') || '[]');
-
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>(localTodos);
+  const user = useContext(AuthContext);
+  const newUserId = user?.id || 0;
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const [filterType, setFilterType] = useState(Filter.All);
   const [error, setError] = useState(initialError);
@@ -29,30 +29,26 @@ export const App: React.FC = () => {
   const filteredTodos = useMemo(() => {
     return filterTodos(todos, filterType);
   }, [todos, filterType]);
+  // }
 
   useEffect(() => {
-    if (!localTodos.length) {
-      try {
-        const serverTodos = async () => {
-          const response = await getTodos(USER_ID);
+    try {
+      const serverTodos = async () => {
+        const response = await getTodos(newUserId);
 
-          return response;
-        };
+        return response;
+      };
 
-        serverTodos()
-          .then(response => setTodos(response));
-      } catch {
-        setError({
-          state: true,
-          type: ErrorType.Update,
-        });
-      }
+      serverTodos()
+        .then(response => setTodos(response));
+    } catch {
+      setError({
+        state: true,
+        type: ErrorType.Update,
+      });
     }
+    // }
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }, [todos]);
 
   const addTodo = (title: string) => {
     if (!title) {
@@ -66,13 +62,13 @@ export const App: React.FC = () => {
 
     setTempTodo({
       id: 0,
-      userId: USER_ID,
+      userId: newUserId,
       title,
       completed: false,
     });
 
-    postTodo(USER_ID, {
-      userId: USER_ID,
+    postTodo(newUserId, {
+      userId: newUserId,
       title,
       completed: false,
     }).then(response => {
@@ -155,6 +151,10 @@ export const App: React.FC = () => {
         });
       });
   };
+
+  if (!user?.id) {
+    return <p>Please login</p>;
+  }
 
   return (
     <div className="todoapp">

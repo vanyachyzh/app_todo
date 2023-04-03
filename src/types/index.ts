@@ -5,3 +5,4 @@ export * from './Todo';
 export * from './FilterValue';
 export * from './Property';
 export * from './KeyType';
+export * from './User';
