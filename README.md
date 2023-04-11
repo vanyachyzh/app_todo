@@ -22,3 +22,4 @@ To delete a task, click on the cross icon next to the task you wish to delete.
 4. React.js
 5. SCSS
 6. BEM Methodology
+7. TypeScript
